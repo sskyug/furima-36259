@@ -15,9 +15,8 @@
 
 ### Association
  has_many :items
- has_many :buyer
- has_many :comments
-
+ has_many :addresses
+ has_many :purchases
  
  ## items テーブル
 
@@ -25,48 +24,40 @@
  | ---------------------- | ---------- | ----------------------------- |
  | items_name             | string     | null: false                   |
  | detail                 | text       | null: false                   |
- | category               | string     | null: false                   |
- | condition              | string     | null: false                   |
- | delivery_charge        | string     | null: false                   |
- | shipment_source        | string     | null: false                   |
- | send_day               | string     | null: false                   |
- | price                  | string     | null: false                   |
+ | category_id            | integer    | null: false                   |
+ | condition_id           | integer    | null: false                   |
+ | delivery_charge_id     | integer    | null: false                   |
+ | prefectures_id         | integer    | null: false                   |
+ | send_day_id            | integer    | null: false                   |
+ | price                  | integer    | null: false                   |
  | user                   | references | null: false, foreign_key: true|
 
  ### Association
 
  belongs_to :users
- has_many :comments
- has_one :buyer
+ has_one :addresses
+ has_one :purchases
 
- ## comments テーブル
-
-| Column               | Type                 | Options                        |
-| -------------------- | -------------------- | ------------------------------ |
-| content              | text                 | null: false                    |
-| item                 | references           | null: false, foreign_key: true |
-| user                 | references           | null: false, foreign_key: true |
-
-
-### Association
-
-belongs_to :users
-belongs_to :items
-
-## buyer テーブル
+## addresses テーブル
 
 | Column                    | Type           | Options                        |
 | ------------------------- | -------------- | ------------------------------ |
 | post_code                 | string         | null: false                    |
-| prefectures               | string         | null: false                    |
+| prefectures_id            | integer        | null: false                    |
 | municipalities            | string         | null: false                    |
 | address                   | string         | null: false                    |
 | building_name             | string         |                                |
 | telephone_number          | string         | null: false                    |
 | user                      | references     | null: false, foreign_key: true |
 
-
 ### Association
 belongs_to :users
-has_one :items
+belongs_to :items
+belongs_to :purchases
 
+## purchases テーブル
+
+| Column         | Type       | Options                        |
+| -------------- | ---------- | ------------------------------ |
+| user           | references | null: false, foreign_key: true |
+| addresses      | references | null: false, foreign_key: true |
