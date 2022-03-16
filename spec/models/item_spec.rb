@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Item, type: :model do
   before do
     @item = FactoryBot.build(:item)
-    @item.image = fixture_file_upload('app/assets/images/star.png')
   end
 
   describe '商品出品' do
@@ -68,6 +67,32 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include("Price can't be blank")
       end
+
+      it '価格に半角数字以外が含まれている場合は出品できない' do
+        @item.price = 'test'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Out of setting range")
+      end
+
+      it '価格が300円未満では出品できない' do
+        @item.price = 299
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Out of setting range")
+      end
+
+      it '価格が9,999,999円を超えると出品できない' do
+        @item.price = 100000000
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price Out of setting range")
+      end
+
+      it 'userが紐付いていなければ出品できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("User must exist")
+      end
+
+
     end
   end
 end
