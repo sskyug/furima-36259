@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :move_to_index, except: [:index,:show]
+  before_action :authenticate_user!, except: [:index,:show]
   before_action :set_item, except: [:index, :new, :create]
   before_action :contributor_confirmation, only: [:edit, :update, :destroy]
 
@@ -50,12 +50,7 @@ class ItemsController < ApplicationController
                                  :send_day_id, :price).merge(user_id: current_user.id)
   end
 
-  def move_to_index
-    unless user_signed_in?
-      redirect_to new_user_session_path
-    end
-  end
-
+  
   def set_item
     @item = Item.find(params[:id])
   end
