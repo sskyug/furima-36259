@@ -1,6 +1,6 @@
 class AddressPurchase
   include ActiveModel::Model
-   attr_accessor :post_code, :prefecture_id, :municipalities, :address, :building_name, :telephone_number, :purchase_id, :user_id, :item_id
+   attr_accessor :post_code, :prefecture_id, :municipalities, :address, :building_name, :telephone_number, :user_id, :item_id
    
    with_options presence: true do
     validates :post_code,format: {with: /\A\d{3}[-]\d{4}\z/, message: "is invalid. Include hyphen(-)"}
