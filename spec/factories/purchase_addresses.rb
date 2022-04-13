@@ -6,6 +6,7 @@ FactoryBot.define do
     address                   { Faker::Address.street_address }
     building_name             { "sample"}
     prefecture_id             { Faker::Number.between(from: 2, to: 48) }
+    token                      {"tok_abcdefghijk00000000000000000"}
     association :item
     association :user
   end
