@@ -1,8 +1,10 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_furima, only: [:index, :create]
+  before_action :prevent_url, only: [:index, :create]
   
   def index
     @purchase_address = PurchaseAddress.new
-    @item = Item.find(params[:item_id])
   end
 
   def new
@@ -10,7 +12,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @purchase_address = PurchaseAddress.new(purchase_address_params)
     if @purchase_address.valid?
       pay_item
@@ -34,5 +35,15 @@ class OrdersController < ApplicationController
       card: purchase_address_params[:token],    # カードトークン
       currency: 'jpy'                 # 通貨の種類（日本円）
     )
+  end
+
+  def prevent_url
+    if @item.user == current_user || @item.purchase != nil
+      redirect_to root_path
+    end
+  end
+
+  def set_furima
+    @item = Item.find(params[:item_id])
   end
 end
